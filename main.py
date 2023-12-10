@@ -5,6 +5,9 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 
+s = 'За {t} секунд поезд проехал {S} метров. Найдите скорость поезда.'
+s.replace('t', '39')
+print(s)
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -14,6 +17,7 @@ class MainWindow(QMainWindow):
         self.cur = connect.cursor()
         self.Item_btn.clicked.connect(self.Item)
         self.title_btn.clicked.connect(self.go_task)
+        self.submit.clicked.connect(self.check)
         self.th = self.cur.execute("""SELECT theme FROM themes""").fetchall()
         self.th = [i[0] for i in self.th]
         for i in self.th:
@@ -33,8 +37,10 @@ class MainWindow(QMainWindow):
         WHERE exersises.theme = 
         (SELECT tasks.ID FROM tasks WHERE Тема = '{self.current}')""").fetchall()
         self.curr_title = [i[0] for i in self.curr_title]
-        print(self.curr_title)
         self.a = self.curr_title[random.randrange(len(self.curr_title))]
+        print(self.a)
+        self.formul = self.cur.execute(f"""SELECT formula FROM exersises WHERE exersise = '{self.a}'""").fetchall()
+        self.formul = self.formul[0][0]
         self.values = self.cur.execute(f"""SELECT exersises.variables FROM exersises 
                 WHERE exersise = '{self.a}'""").fetchall()[0]
         self.values = self.values[0].split('@')
@@ -46,12 +52,25 @@ class MainWindow(QMainWindow):
                                    int(self.values[i][3]))
             self.s[self.values[i][0]] = v_1
         print(self.s)
-        for k in self.s:
-            print(k)
-            print(self.s[k])
-            self.a.replace(k, str(self.s[k]))
+        for i in self.values:
+            print(i[0])
+            print(self.s[i[0]])
+            self.a = self.a.replace('{' + i[0] + '}', str(self.s[i[0]]))
+            self.formul = self.formul.replace(i[0], str(self.s[i[0]]))
         self.task.setPlainText(self.a)
+        print(self.formul)
+        self.correct = round(eval(self.formul), 2)
+        print(self.correct)
+        print(self.a)
 
+    def check(self):
+        self.answer_1 = float(self.answer.text())
+        print(self.answer_1)
+        print(self.correct)
+        if self.answer_1 == self.correct:
+            print(True)
+        else:
+            print(False)
 
 
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>782</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QLineEdit" name="answer">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>470</y>
+      <x>20</x>
+      <y>400</y>
       <width>161</width>
       <height>41</height>
      </rect>
@@ -47,14 +47,14 @@
    <widget class="QPushButton" name="submit">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>480</y>
-      <width>93</width>
-      <height>28</height>
+      <x>70</x>
+      <y>450</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Проверить </string>
     </property>
    </widget>
    <widget class="QPushButton" name="Item_btn">
@@ -91,6 +91,39 @@
       <width>691</width>
       <height>271</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="explanation">
+    <property name="geometry">
+     <rect>
+      <x>193</x>
+      <y>456</y>
+      <width>521</width>
+      <height>271</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="corr">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>400</y>
+      <width>271</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="let_explain">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>500</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Объяснение</string>
     </property>
    </widget>
   </widget>

@@ -3,11 +3,8 @@ import sys
 import sqlite3
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
+import math
 
-
-s = 'За {t} секунд поезд проехал {S} метров. Найдите скорость поезда.'
-s.replace('t', '39')
-print(s)
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -37,40 +34,43 @@ class MainWindow(QMainWindow):
         WHERE exersises.theme = 
         (SELECT tasks.ID FROM tasks WHERE Тема = '{self.current}')""").fetchall()
         self.curr_title = [i[0] for i in self.curr_title]
+        print(self.curr_title)
         self.a = self.curr_title[random.randrange(len(self.curr_title))]
-        print(self.a)
-        self.formul = self.cur.execute(f"""SELECT formula FROM exersises WHERE exersise = '{self.a}'""").fetchall()
-        self.formul = self.formul[0][0]
+        self.ex = self.cur.execute(f"""SELECT explanation from exersises 
+        WHERE exersise = '{self.a}'""").fetchall()[0][0]
+        print(self.ex)
+        self.formul = self.cur.execute(f"""SELECT formula FROM exersises WHERE 
+        exersise = '{self.a}'""").fetchall()[0][0]
+        print(self.formul)
         self.values = self.cur.execute(f"""SELECT exersises.variables FROM exersises 
                 WHERE exersise = '{self.a}'""").fetchall()[0]
         self.values = self.values[0].split('@')
         self.values = [i.split(';') for i in self.values]
-        print(self.values)
         self.s = {}
+        print(self.values)
         for i in range(len(self.values)):
-            v_1 = random.randrange(int(self.values[i][1]), int(self.values[i][2]) + 1,
+            val_1 = random.randrange(int(self.values[i][1]), int(self.values[i][2]) + 1,
                                    int(self.values[i][3]))
-            self.s[self.values[i][0]] = v_1
+            self.s[self.values[i][0]] = val_1
         print(self.s)
         for i in self.values:
-            print(i[0])
-            print(self.s[i[0]])
             self.a = self.a.replace('{' + i[0] + '}', str(self.s[i[0]]))
             self.formul = self.formul.replace(i[0], str(self.s[i[0]]))
-        self.task.setPlainText(self.a)
         print(self.formul)
-        self.correct = round(eval(self.formul), 2)
-        print(self.correct)
         print(self.a)
+        self.task.setPlainText(self.a)
+        self.vari = eval(str(self.formul))
+        print(self.vari)
+        self.correct = round(eval(self.formul), 2)
 
     def check(self):
-        self.answer_1 = float(self.answer.text())
-        print(self.answer_1)
-        print(self.correct)
+        self.answer_1 = round(float(self.answer.text()), 2)
         if self.answer_1 == self.correct:
-            print(True)
+            self.corr.setText(f'Молодец! Всё правильно.')
         else:
-            print(False)
+            self.corr.setText(f'Неверно. Правильный ответ - {self.correct}.')
+        if self.let_explain.isChecked():
+            self.explanation.setPlainText(self.ex)
 
 
 

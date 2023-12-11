@@ -34,33 +34,25 @@ class MainWindow(QMainWindow):
         WHERE exersises.theme = 
         (SELECT tasks.ID FROM tasks WHERE Тема = '{self.current}')""").fetchall()
         self.curr_title = [i[0] for i in self.curr_title]
-        print(self.curr_title)
         self.a = self.curr_title[random.randrange(len(self.curr_title))]
         self.ex = self.cur.execute(f"""SELECT explanation from exersises 
         WHERE exersise = '{self.a}'""").fetchall()[0][0]
-        print(self.ex)
         self.formul = self.cur.execute(f"""SELECT formula FROM exersises WHERE 
         exersise = '{self.a}'""").fetchall()[0][0]
-        print(self.formul)
         self.values = self.cur.execute(f"""SELECT exersises.variables FROM exersises 
                 WHERE exersise = '{self.a}'""").fetchall()[0]
         self.values = self.values[0].split('@')
         self.values = [i.split(';') for i in self.values]
         self.s = {}
-        print(self.values)
         for i in range(len(self.values)):
             val_1 = random.randrange(int(self.values[i][1]), int(self.values[i][2]) + 1,
                                    int(self.values[i][3]))
             self.s[self.values[i][0]] = val_1
-        print(self.s)
         for i in self.values:
             self.a = self.a.replace('{' + i[0] + '}', str(self.s[i[0]]))
             self.formul = self.formul.replace(i[0], str(self.s[i[0]]))
-        print(self.formul)
-        print(self.a)
         self.task.setPlainText(self.a)
         self.vari = eval(str(self.formul))
-        print(self.vari)
         self.correct = round(eval(self.formul), 2)
 
     def check(self):
@@ -71,8 +63,6 @@ class MainWindow(QMainWindow):
             self.corr.setText(f'Неверно. Правильный ответ - {self.correct}.')
         if self.let_explain.isChecked():
             self.explanation.setPlainText(self.ex)
-
-
 
 
 if __name__ == '__main__':
